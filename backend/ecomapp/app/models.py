@@ -63,6 +63,7 @@ class Orders(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     total_price = models.FloatField()
+    status = models.IntegerField(default=0)
 
 class Order_Medicine(models.Model):
     id = models.AutoField(primary_key=True)

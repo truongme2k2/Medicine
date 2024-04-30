@@ -18,7 +18,6 @@ class CategoriesSerializer(serializers.ModelSerializer):
         fields = ['category_id', 'name']
 
 class MedicineSerializer(serializers.ModelSerializer):
-    category = CategoriesSerializer() 
 
     class Meta:
         model = Medicine
