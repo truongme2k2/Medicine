@@ -9,10 +9,6 @@ from app.middlewares import UserMiddleware
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 
-import logging
-
-logger = logging.getLogger(__name__)
-
 # Create your views here.
 @api_view(['POST'])
 def register(request):
@@ -32,7 +28,6 @@ def register(request):
     serializer = UserProfileSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
-        logger.info('Register Successfully')
         return Response({'message': 'Register is success', 'data': serializer.data}, status=status.HTTP_201_CREATED)
 
     return Response({'message': 'Information is invalid', 'data': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
