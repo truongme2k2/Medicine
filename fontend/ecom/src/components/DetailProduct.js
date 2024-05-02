@@ -5,20 +5,42 @@ import { Card, ListGroup, Row, Col, Form, Button } from 'react-bootstrap';
 import './style.css'
 import NavigationBar from './NavigationBar';
 import Categories from './Categories';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function DetailProduct() {
     const { id } = useParams(); // Lấy id từ URL
     const [medicine, setMedicine] = useState(null);
     const [quantity, setQuantity] = useState(1);
+    const navigate = useNavigate();
 
     const handleQuantityChange = (event) => {
         setQuantity(event.target.value);
     };
 
-    const handleBuyButtonClick = () => {
-        // Xử lý khi người dùng nhấn vào nút mua
-        console.log('Buy button clicked with quantity:', quantity);
+    const handleBuyButtonClick = async () => {
+        try {
+            const accessToken = localStorage.getItem('access_token');
+            if (!accessToken) {
+                console.error('Access token not found in local storage');
+                return;
+            }
+    
+            const response = await axios.post('http://127.0.0.1:8000/api/addToCart/', {
+                medicine_id: medicine.med_id,
+                quantity: quantity
+            }, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+    
+            console.log(response.data); // Xử lý kết quả từ server sau khi thêm vào giỏ hàng
+            navigate('/cart')
+        } catch (error) {
+            console.error('Error adding medicine to cart:', error);
+        }
     };
+    
 
     useEffect(() => {
         const fetchMedicine = async () => {
@@ -38,6 +60,7 @@ function DetailProduct() {
             } catch (error) {
                 console.error('Error fetching medicine details:', error);
             }
+
         };
 
         fetchMedicine();

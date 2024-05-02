@@ -45,7 +45,6 @@ function Products({ categoryId }) {
     return (
         
         <Container>
-            <h2>Products</h2>
             <Row  className="equal-height-row">
                 {medicines.map(medicine => (
                     <Col key={medicine.med_id} md={4}>
@@ -53,7 +52,7 @@ function Products({ categoryId }) {
                             <Card.Img variant="top" src={`http://127.0.0.1:8000/media/${medicine.img}`} />
                             <Card.Body>
                                 <Card.Title>{medicine.name}</Card.Title>
-                                <Card.Text className="description">{medicine.description}</Card.Text>
+                                <Card.Text className="description">Mô tả: {medicine.description}</Card.Text>
                                 <Card.Text>Số lượng: {medicine.quantity}</Card.Text>
                                 <Card.Text>Giá bán: {medicine.buy_price}</Card.Text>
                             </Card.Body>

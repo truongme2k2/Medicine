@@ -36,7 +36,7 @@ function Categories({ onCategoryClick }) {
 
     return (
         <div>
-            <h2>Categories</h2>
+            <h2>Danh mục sản phẩm</h2>
             <ListGroup>
                 {categories.map(category => (
                     <ListGroup.Item

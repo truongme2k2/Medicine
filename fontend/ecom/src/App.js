@@ -6,6 +6,7 @@ import Signup from './components/Signup';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Home from './components/Home';
 import DetailProduct from './components/DetailProduct';
+import Order from './components/Order';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/signup' element={<Signup/>}></Route>
         <Route path='/login' element={<Login/>}></Route>
         <Route path="/product/:id" element={<DetailProduct />} />
+        <Route path='/cart' element={<Order/>}></Route>
       </Routes>
     </BrowserRouter>
   );

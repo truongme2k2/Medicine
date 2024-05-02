@@ -7,7 +7,7 @@ from .models import UserProfile, Categories, Orders, Order_Medicine, Medicine
 from rest_framework_simplejwt.tokens import RefreshToken
 from app.middlewares import UserMiddleware, AdminMiddleware
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Q
+from django.utils import timezone
 
 # Create your views here.
 @api_view(['POST'])
@@ -164,12 +164,12 @@ def getOrder(request):
                         return Response({'error': 'Medicine not found'})
             else:
                 return Response("ko co mat hang nao")  # Trả về danh sách rỗng nếu không có mặt hàng nào trong đơn hàng
-            return Response(data)
+            return Response({'data': data, 'order_id': orders[0].order_id})
         else: 
             return Response("Error: Multiple active orders found")
     else:  
         new_order = Orders.objects.create(user=user, total_price=0, status=0)
-        return Response()
+        return Response({'order_id': new_order.order_id})
 
     
 
@@ -191,7 +191,19 @@ def getByCategory(request,id):
 @csrf_exempt
 @UserMiddleware
 def order(request):
-    return Response("ok")
+    try:
+        order = Orders.objects.get(order_id = int(request.data.get('order_id')))
+        total_price = float(request.data.get('total_price'))
+
+        order.total_price = total_price
+        order.time = timezone.now()  # Thời điểm cập nhật
+        order.status = 1
+        order.save()
+        print("okkok")
+        return Response("ok")
+    except Orders.DoesNotExist:
+        return Response({'error':'order not found'}, status=404)
+
 
 @api_view(['POST'])
 @csrf_exempt
