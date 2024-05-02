@@ -12,8 +12,14 @@ function Login() {
 
     useEffect(() => {
         let access_token = localStorage.getItem("access_token")
+        const is_staff = localStorage.getItem('is_staff');
         if (access_token) {
-            navigate('/');
+            if (is_staff === 'true') {
+                navigate('/admin')
+            }else{
+                navigate('/');
+            }
+            
         }
     }, [])
 
@@ -29,6 +35,7 @@ function Login() {
             // Kiểm tra xem có access_token trong phản hồi hay không
             if (data && data.access_token) {
                 localStorage.setItem('access_token', data.access_token);
+                localStorage.setItem('is_staff',data.user_data['is_staff']);
             } else {
                 // Xử lý trường hợp không có access_token trong phản hồi
                 setError('Không có access_token trong phản hồi từ máy chủ');

@@ -211,9 +211,10 @@ def order(request):
 def createMedicine(request):
     if request.method == 'POST':
         serializer = MedicineSerializer(data=request.data)
+        print(request.data)
         if serializer.is_valid():
             # Kiểm tra xem tên thuốc đã tồn tại chưa
-            name = serializer.validated_data.get('name')
+            name = request.data.get('name')
             if Medicine.objects.filter(name=name).exists():
                 return Response({'error': 'Medicine with this name already exists'}, status=status.HTTP_400_BAD_REQUEST)
             
