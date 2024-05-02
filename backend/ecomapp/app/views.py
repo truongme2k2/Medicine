@@ -177,7 +177,7 @@ def getOrder(request):
 
 @csrf_exempt
 @UserMiddleware
-@api_view(['POST'])
+@api_view(['GET'])
 def getByCategory(request,id):
     try:
         medicines = Medicine.objects.filter(category_id=id)

@@ -4,7 +4,7 @@ import { Card, Container, Row, Col } from 'react-bootstrap';
 import './style.css'
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-function Products() {
+function Products({ categoryId }) {
     const [medicines, setMedicines] = useState([]);
     const navigate = useNavigate();
 
@@ -17,7 +17,12 @@ function Products() {
                     return;
                 }
 
-                const response = await axios.get('http://127.0.0.1:8000/api/getAllMedicine/', {
+                let url = 'http://127.0.0.1:8000/api/getAllMedicine/';
+                if (categoryId) {
+                    url = `http://127.0.0.1:8000/api/getByCategory/${categoryId}/`;
+                }
+
+                const response = await axios.get(url, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }
@@ -29,7 +34,7 @@ function Products() {
         };
 
         fetchMedicines();
-    }, []);
+    }, [categoryId]);
 
     const handleProductClick = (med_id) => {
       // Chuyển hướng đến trang chi tiết sản phẩm với id của sản phẩm được chọn
