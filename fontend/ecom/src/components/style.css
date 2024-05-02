@@ -24,3 +24,9 @@
     white-space: nowrap;
     flex-grow: 1;
 }
+
+.description {
+    max-height: 200px; /* Đặt giới hạn chiều cao */
+    overflow: hidden; /* Ẩn nội dung vượt quá chiều cao */
+    text-overflow: ellipsis; /* Hiển thị dấu chấm (...) cho phần nội dung bị cắt */
+  }

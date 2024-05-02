@@ -71,6 +71,20 @@ def getAllMedicine(request):
     serializer = MedicineSerializer(list_medicine, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@csrf_exempt
+@UserMiddleware
+def getDetailMedicine(request,id):
+    med_id = int(id)
+    if not med_id:
+        return Response({'error': 'Medicine ID is required'}, status=400)
+    try:
+        medicine = Medicine.objects.get(med_id = med_id)
+        serializer = MedicineSerializer(medicine)
+        return Response(serializer.data)
+    except Medicine.DoesNotExist:
+        return Response({'error':'Medicine not fount'}, status=404)
+
 @api_view(['POST'])
 @csrf_exempt
 @UserMiddleware
