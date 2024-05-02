@@ -75,11 +75,95 @@ def getAllMedicine(request):
 @csrf_exempt
 @UserMiddleware
 def addToCart(request):
-    return Response("ok")
+    # Lấy user_id từ request
+    user_id = request.user_id
+    
+    try:
+        # Lấy UserProfile tương ứng với user_id
+        user_profile = UserProfile.objects.get(id=user_id)
+    except UserProfile.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    try:
+        # Tìm đơn hàng chưa thanh toán của người dùng
+        order = Orders.objects.get(user=user_profile, status=0)
+    except Orders.DoesNotExist:
+        # Nếu không tìm thấy đơn hàng chưa thanh toán, tạo mới
+        order = Orders.objects.create(user=user_profile, total_price=0, status=0)
 
-@api_view(['GET'])
+    # Lấy dữ liệu mặt hàng từ request body
+    data = request.data
+    medicine_id = int(data.get('medicine_id'))
+    quantity = int(data.get('quantity'))
+
+    try:
+        # Tìm thông tin mặt hàng từ database
+        medicine = Medicine.objects.get(med_id=medicine_id)
+    except Medicine.DoesNotExist:
+        return Response({'error': 'Medicine not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Kiểm tra số lượng tồn kho
+    if medicine.quantity < quantity:
+        return Response({'error': 'Not enough stock for the requested quantity'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        # Kiểm tra xem mặt hàng đã tồn tại trong đơn hàng chưa
+        order_medicine = Order_Medicine.objects.get(order=order, medicine_id=medicine_id)
+        # Nếu mặt hàng đã tồn tại, không thêm vào lại
+        return Response({'message': 'Medicine already exists in the order'}, status=status.HTTP_400_BAD_REQUEST)
+    except Order_Medicine.DoesNotExist:
+        # Tạo một Order_Medicine mới và thêm vào đơn hàng
+        order_medicine = Order_Medicine.objects.create(order=order, medicine=medicine, quantity=quantity, price=medicine.buy_price * quantity)
+        medicine.quantity -= quantity
+        medicine.save()
+        return Response({'message': 'Medicine added to cart successfully'}, status=status.HTTP_201_CREATED)
+    
+
 @csrf_exempt
 @UserMiddleware
+@api_view(['GET'])
+def getOrder(request):
+    user_id = request.user_id
+    try: 
+        user = UserProfile.objects.get(id = user_id)
+    except UserProfile.DoesNotExist:
+        return Response({'error': 'user not found'})
+    orders = Orders.objects.filter(user=user_id, status=0)
+    if orders.exists():  
+        if orders.count() == 1:
+            data = []
+            list_med = Order_Medicine.objects.filter(order=orders[0].order_id)
+            if list_med.exists():
+                for med in list_med:
+                    try:
+                        tmp = Medicine.objects.get(med_id=med.medicine_id)
+                        tmp_data = {
+                            'id': tmp.med_id,
+                            'name': tmp.name,
+                            'img': tmp.img,
+                            'buy_price': tmp.buy_price,
+                            'quantity': med.quantity,
+                            'price': med.price
+                        }
+                        data.append(tmp_data)
+                    except Medicine.DoesNotExist:
+                        return Response({'error': 'Medicine not found'})
+            else:
+                return Response("ko co mat hang nao")  # Trả về danh sách rỗng nếu không có mặt hàng nào trong đơn hàng
+            return Response(data)
+        else: 
+            return Response("Error: Multiple active orders found")
+    else:  
+        new_order = Orders.objects.create(user=user, total_price=0, status=0)
+        return Response()
+
+    
+
+
+
+@csrf_exempt
+@UserMiddleware
+@api_view(['POST'])
 def getByCategory(request,id):
     try:
         medicines = Medicine.objects.filter(category_id=id)
