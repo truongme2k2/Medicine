@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { Button } from 'react-bootstrap';
 function Signup() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -67,7 +67,7 @@ function Signup() {
                         <input type='text' name='phone' placeholder='Enter Phone' className='form-control' onChange={handleChange} value={formData.phone} />
                     </div>
                     <div className='d-grid'>
-                        <button className='btn btn-primary'>Sign Up</button>
+                        <Button className='bg-primary'>Sign Up</Button>
                     </div>
                     <p className='text-end mt-2'>
                         Already Registered

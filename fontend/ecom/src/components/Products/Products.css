@@ -1,0 +1,45 @@
+.btn-primary{
+    background-color: var(--color-blue);
+    border: 0px;
+    color: white;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 8px;
+    margin-bottom: 8px;
+    width: 200px;
+}
+
+
+.card:hover{
+    border: 1px solid var(--color-blue);
+}
+
+.price-product{
+    color: var(--color-blue);
+    font-weight: bold;
+}
+
+.title-product{
+    font-size: 18px;
+}
+
+.sort{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+li{
+    list-style: none;
+}
+
+.item-sort{
+    margin: 0 5px;
+    padding: 5px 10px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    border: 1px solid var(--color-gray);
+    font-weight: bold;
+    color: var(--color-gray);
+    cursor: pointer;
+}

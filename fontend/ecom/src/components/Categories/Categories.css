@@ -1,0 +1,14 @@
+.select-price{
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    border:1px solid var(--color-gray);
+    border-radius: 10px;
+    margin: 8px 0;
+    cursor: pointer;
+}
+
+.select-price:hover{
+    color: var(--color-blue);
+    border: 1px solid var(--color-blue);
+}

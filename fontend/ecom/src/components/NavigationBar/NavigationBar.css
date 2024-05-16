@@ -1,0 +1,26 @@
+.header{
+    color: var(--color-blue);
+}
+
+.link-cart{
+    display: flex;
+    align-items: center;
+    color: white;
+    background-color: #1250DC;
+    border-radius: 50px;
+    padding: 10px 15px;
+}
+
+.link-cart h6{
+    padding-left: 8px;
+}
+
+.navbar-user{
+    background-color: white;
+    border-radius: 50px;
+    padding: 0 8px;
+    color: #1250DC;
+    font-weight: bold;
+}
+
+

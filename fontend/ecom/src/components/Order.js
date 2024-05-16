@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import NavigationBar from './NavigationBar';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import NavigationBar from './NavigationBar/NavigationBar';
 
 const Order = () => {
     const [orderData, setOrderData] = useState(null);
@@ -51,7 +51,7 @@ const Order = () => {
                 'http://127.0.0.1:8000/api/order/',
                 {
                     order_id: orderId,
-                    total_price: totalPrice
+                    total_price: totalPrice + 30000
                 },
                 {
                     headers: {
@@ -61,67 +61,70 @@ const Order = () => {
             );
             // Xử lý dữ liệu response nếu cần
             navigate('/')
-            console.log('Order updated successfully:', response.data);         
+            console.log('Order updated successfully:', response.data);
         } catch (error) {
             // Xử lý lỗi nếu có
             console.error('Error updating order:', error);
             throw error; // Ném lỗi để xử lý ở mức cao hơn nếu cần
         }
     };
-    
+
 
     return (
-        <div className="container">
+        <div >
             <div>
                 <NavigationBar />
             </div>
-            <h1>Order Details</h1>
-            <table className="table">
-                <thead className="thead-dark">
-                    <tr>
-                        <th>Name</th>
-                        <th>Image</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        {/* Add more headers as needed */}
-                    </tr>
-                </thead>
-                <tbody>
-                    {orderData && Array.isArray(orderData) && orderData.length > 0 ? (
-                        orderData.map((item, index) => (
-                            <tr key={index}>
-                                <td>{item.name}</td>
-                                <td><img src={`http://127.0.0.1:8000/media/${item.img}`} alt={item.name} style={{ width: '50px', height: '50px' }} /></td>
-                                <td>{item.quantity}</td>
-                                <td>{item.price} VND</td>
-                                {/* Add more cells as needed */}
-                            </tr>
-                        ))
-                    ) : (
+            <div className="container">
+                <h1>Order Details</h1>
+                <table className="table">
+                    <thead className="thead-dark">
                         <tr>
-                            <td colSpan="4">Chưa có mặt hàng nào.</td>
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            {/* Add more headers as needed */}
                         </tr>
-                    )}
-                    <tr>
-                        <td>Phí vận chuyển cố định</td>
-                        <td></td>
-                        <td></td>
-                        <td>30000 VND</td>
-                    </tr>
-                    <tr>
-                        <td>Tổng hóa đơn</td>
-                        <td></td>
-                        <td></td>
-                        <td>{totalPrice + 30000} VND</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><button className="btn btn-primary" onClick={handlePayment} >Thanh toán</button></td>
-                    </tr>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {orderData && Array.isArray(orderData) && orderData.length > 0 ? (
+                            orderData.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.name}</td>
+                                    <td><img src={`http://127.0.0.1:8000/media/${item.img}`} style={{ width: '50px', height: '50px' }} /></td>
+                                    <td>{item.quantity}</td>
+                                    <td>{item.price} VND</td>
+                                    {/* Add more cells as needed */}
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="4">Chưa có mặt hàng nào.</td>
+                            </tr>
+                        )}
+                        <tr>
+                            <td>Phí vận chuyển cố định</td>
+                            <td></td>
+                            <td></td>
+                            <td>30000 VND</td>
+                        </tr>
+                        <tr>
+                            <td>Tổng hóa đơn</td>
+                            <td></td>
+                            <td></td>
+                            <td>{totalPrice + 30000} VND</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><button className="btn btn-primary bg-primary" onClick={handlePayment} >Thanh toán</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
 
         </div>
     );

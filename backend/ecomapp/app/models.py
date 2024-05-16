@@ -48,6 +48,10 @@ class Categories(models.Model):
     category_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
 
+class TypeOfUser(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+
 class Medicine(models.Model):
     med_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
@@ -57,6 +61,7 @@ class Medicine(models.Model):
     img = models.CharField(max_length=255)
     import_price = models.FloatField()
     buy_price = models.FloatField()
+    type_of_user = models.ForeignKey(TypeOfUser, on_delete=models.CASCADE)
 
 class Orders(models.Model):
     order_id = models.AutoField(primary_key=True)
@@ -71,3 +76,4 @@ class Order_Medicine(models.Model):
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     price = models.FloatField()
+

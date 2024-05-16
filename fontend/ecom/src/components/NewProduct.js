@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function NewProduct() {
@@ -6,11 +6,46 @@ function NewProduct() {
     name: '',
     description: '',
     quantity: '',
-    category: '',
+    category: '', // Sửa lại thành category_id để lưu ID của category
     img: '',
     import_price: '',
-    buy_price: ''
+    buy_price: '',
+    type_of_user: '',
   });
+
+  const [categories, setCategories] = useState([]);
+  const [types, setTypes] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const accessToken = localStorage.getItem('access_token');
+      if (!accessToken) {
+        console.error('Access token not found in local storage');
+        return;
+      }
+
+      try {
+        const categoryResponse = await axios.get('http://127.0.0.1:8000/api/getAllCategories/', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+
+        const typeResponse = await axios.get('http://127.0.0.1:8000/api/getAllType/', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+
+        setCategories(categoryResponse.data);
+        setTypes(typeResponse.data);
+      } catch (error) {
+        console.error('Error fetching categories and types:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // Chỉ chạy một lần sau khi component được render
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -65,7 +100,21 @@ function NewProduct() {
         </div>
         <div className="mb-3">
           <label htmlFor="category" className="form-label">Category</label>
-          <input type="text" className="form-control" id="category" name="category" value={formData.category} onChange={handleChange} />
+          <select className="form-select" id="category" name="category" value={formData.category} onChange={handleChange}>
+            <option value="">Select Category</option>
+            {categories.map(category => (
+              <option key={category.category_id} value={category.category_id}>{category.name}</option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="type_of_user" className="form-label">Type</label>
+          <select className="form-select" id="type_of_user" name="type_of_user" value={formData.type_of_user} onChange={handleChange}>
+            <option value="">Select Type</option>
+            {types.map(type => (
+              <option key={type.id} value={type.id}>{type.name}</option>
+            ))}
+          </select>
         </div>
         <div className="mb-3">
           <label htmlFor="img" className="form-label">Image</label>

@@ -3,25 +3,13 @@ import './style.css'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import { Button } from 'react-bootstrap';
 
 function Login() {
     const [email, setEmail] = useState('') // Thay đổi tên state thành 'email'
     const [password, SetPassword] = useState('')
     const navigate = useNavigate();
     const [error, setError] = useState('');
-
-    useEffect(() => {
-        let access_token = localStorage.getItem("access_token")
-        const is_staff = localStorage.getItem('is_staff');
-        if (access_token) {
-            if (is_staff === 'true') {
-                navigate('/admin')
-            }else{
-                navigate('/');
-            }
-            
-        }
-    }, [])
 
     const handleLogin = async () => {
         try {
@@ -36,6 +24,17 @@ function Login() {
             if (data && data.access_token) {
                 localStorage.setItem('access_token', data.access_token);
                 localStorage.setItem('is_staff',data.user_data['is_staff']);
+
+                let access_token = localStorage.getItem("access_token")
+                const is_staff = localStorage.getItem('is_staff');
+                if (access_token) {
+                    if (is_staff === 'true') {
+                        navigate('/admin')
+                    }else{
+                        navigate('/');
+                    }
+                    
+                }
             } else {
                 // Xử lý trường hợp không có access_token trong phản hồi
                 setError('Không có access_token trong phản hồi từ máy chủ');
@@ -50,7 +49,6 @@ function Login() {
     return (
         <div className='login template d-flex justify-content-center align-items-center vh-100 bg-primary'>
             <div className='form_container p-5 rounded bg-white'>
-                <form>
                     <h3 className='text-center'>Sign In</h3>
                     <div className='mb-2'>
                         <label htmlFor='email'>Email</label> 
@@ -67,13 +65,12 @@ function Login() {
                         </label>
                     </div>
                     <div className='d-grid'>
-                        <button className='btn btn-primary' onClick={() => handleLogin()}>Sign in</button>
+                        <Button className='bg-primary' onClick={() => handleLogin()}>Sign in</Button>
                     </div>
                     <p className='text-end mt-2'>
                         Forgot <a href=''>Password?</a>
                         <Link to='/signup' className='ms-2'>Sign up</Link>
                     </p>
-                </form>
             </div>
         </div>
     )
