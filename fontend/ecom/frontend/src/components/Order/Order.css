@@ -1,0 +1,39 @@
+.order-ctn{
+    background-color: var(--color-gray);
+}
+
+.call-back{
+    text-decoration: none;
+    font-weight: 500;
+    margin: 20px 0;
+    font-size: 18px;
+}
+
+.table-order{
+    margin-top: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.img-product-order{
+    border-radius: 5px;
+    border: 1px solid var(--color-blue-5);
+}
+
+.total-price{
+    margin-top: 20px;
+    background-color: var(--color-white);
+    padding: 15px 20px;
+    border-radius: 15px;
+
+}
+
+.text-sale{
+    background-color: var(--color-white);
+    padding: 10px 20px ;
+    color: var(--color-blue);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px ;
+}

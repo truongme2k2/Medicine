@@ -21,5 +21,6 @@ urlpatterns = [
     path('getByPrice/', views.getByPrice, name='getByPrice'),
     path('viewReport/', views.viewReport, name = 'viewReport'),
     path('updateMedicine/<str:id>/', views.updateMedicine, name='updateMedicine'),
-    path('viewChart/', views.viewChart, name='viewChart')
+    path('viewChart/', views.viewChart, name='viewChart'),
+    path('kpi/', views.kpi,name='kpi')
 ]

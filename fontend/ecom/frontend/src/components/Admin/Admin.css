@@ -1,0 +1,33 @@
+.admin-ctn{
+    background-color: var(--color-gray);
+    min-height: 100vh;
+}
+
+.list-admin-ctn{
+    background-color: var(--color-white);
+}
+
+.list-admin-item:hover{
+    background-color: var(--color-blue-5);
+}
+
+.list-admin{
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-admin li{
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    font-weight: 600 ;
+
+}
+
+.list-admin li:hover{
+    background-color: var(--color-blue-5);
+    color: var(--color-white);
+}

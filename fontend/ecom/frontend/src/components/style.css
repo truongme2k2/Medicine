@@ -1,0 +1,30 @@
+.navbar-brand {
+    margin-right: auto; /* Căn trái */
+}
+
+.navbar-nav {
+    margin-left: auto; /* Căn phải */
+}
+
+
+.equal-height-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+}
+
+.description {
+    white-space: pre-line;
+  }
